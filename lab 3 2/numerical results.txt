@@ -1,0 +1,3 @@
+MSE: 
+ validation error: 0.00095 
+ training error: 0.00091, test error: 0.00096 

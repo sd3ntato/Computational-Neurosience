@@ -1,0 +1,3 @@
+MSE: 
+train error: 0.00268 , validation error: 0.00273 
+test error: 0.00248 
