@@ -8,6 +8,7 @@ m = load('lab2_2_data.mat');
 %m1 = load('digits.mat');
 %m.p3 = reshape( cell2mat(m1.dataset(4)), 32*32,1);
 
+% plot the fundamental memories
 subplot(3,3,1);
 imagesc( reshape( xi(1), 32, 32) );
 title('Pattern 0')
@@ -18,7 +19,8 @@ subplot(3,3,3);
 imagesc( reshape( xi(3), 32, 32) );
 title('Pattern 2')
 
-% matrix of fundamental memories
+% matrix of fundamental memories. xi(mu) is a function that returns desired
+% patterns
 XI = [ xi(1)' ; xi(2)' ; xi(3)']' ;
 N = size(XI,1);
 M = size(XI,2);
@@ -26,19 +28,13 @@ M = size(XI,2);
 %% STORAGE PHASE
 W = ( ( XI * XI') - M * eye(N,N) )/N ;
 
-b = zeros(N,1);
-
-for mu = 1:M
-    b = b + xi(mu) ; 
-end
-b = -(b/M);
-
-
+% values of bias found by trial and error. I started from b = sum(XI,2)/N.
+b = -sum(XI,2)/M;
 
 %% RETRIEVAL PHASE
 probe = distort_image( xi(1), 0.05);
 [x,j,E,O] = retrieve(probe,10);
-plot_results(probe,x,E,O,'pattern 2 distorted 0.05')
+plot_results(probe,x,E,O,'pattern 2 distorted 0.05' )
 
 probe = distort_image( xi(1), 0.1);
 [x,j,E,O] = retrieve(probe,10);
@@ -72,7 +68,7 @@ probe = distort_image( xi(3), 0.25);
 [x,j,E,O] = retrieve(probe,10);
 plot_results(probe,x,E,O,'pattern 2 distorted 0.25')
 
-%% AUXILIARY FUNCTINS
+%% AUXILIARY FUNCTIONS
 function plot_results(probe,x,E,O,filename)
     subplot(3,3,4);
     imagesc( reshape( probe, 32, 32) );
@@ -96,7 +92,8 @@ function plot_results(probe,x,E,O,filename)
     ylim([0,1])
     title('Overlap 2')
     
-    sgtitle(filename)
+    tit = [filename, sprintf(' - discr: %0.1f',norm(x-xi(1)))];
+    sgtitle(title)
     saveas(gcf, append('imgs/' ,filename, '.jpg') );
 end
 

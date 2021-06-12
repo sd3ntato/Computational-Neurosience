@@ -28,56 +28,48 @@ M = size(XI,2);
 %% STORAGE PHASE
 W = ( ( XI * XI') - M * eye(N,N) )/N ;
 
-b = zeros(N,1);
-
-% values of bias found by trial and error. I started from 
-% b = sum(XI(:,mu))
-for mu = 1:M
-    b = b + xi(mu) ; 
-end
-b = -(b/M);
-
-
+% values of bias found by trial and error. I started from b = sum(XI,2)/N.
+b = -sum(XI,2)/M;
 
 %% RETRIEVAL PHASE
 probe = distort_image( xi(1), 0.05);
 [x,j,E,O] = retrieve(probe,10);
-plot_results(probe,x,E,O,'pattern 2 distorted 0.05')
+plot_results(probe,x,E,O,1,'pattern 0 distorted 0.05' )
 
 probe = distort_image( xi(1), 0.1);
 [x,j,E,O] = retrieve(probe,10);
-plot_results(probe,x,E,O,'pattern 2 distorted 0.1')
+plot_results(probe,x,E,O,1,'pattern 0 distorted 0.1')
 
 probe = distort_image( xi(1), 0.25);
 [x,j,E,O] = retrieve(probe,10);
-plot_results(probe,x,E,O,'pattern 2 distorted 0.25')
+plot_results(probe,x,E,O,1,'pattern 0 distorted 0.25')
 
 probe = distort_image( xi(2), 0.05);
 [x,j,E,O] = retrieve(probe,10);
-plot_results(probe,x,E,O,'pattern 2 distorted 0.05')
+plot_results(probe,x,E,O,2,'pattern 1 distorted 0.05')
 
 probe = distort_image( xi(2), 0.1);
 [x,j,E,O] = retrieve(probe,10);
-plot_results(probe,x,E,O,'pattern 2 distorted 0.1')
+plot_results(probe,x,E,O,2,'pattern 1 distorted 0.1')
 
 probe = distort_image( xi(2), 0.25);
 [x,j,E,O] = retrieve(probe,10);
-plot_results(probe,x,E,O,'pattern 2 distorted 0.25')
+plot_results(probe,x,E,O,2,'pattern 1 distorted 0.25')
 
 probe = distort_image( xi(3), 0.05);
 [x,j,E,O] = retrieve(probe,10);
-plot_results(probe,x,E,O,'pattern 2 distorted 0.05')
+plot_results(probe,x,E,O,3,'pattern 3 distorted 0.05')
 
 probe = distort_image( xi(3), 0.1);
 [x,j,E,O] = retrieve(probe,10);
-plot_results(probe,x,E,O,'pattern 2 distorted 0.1')
+plot_results(probe,x,E,O,3,'pattern 3 distorted 0.1')
 
 probe = distort_image( xi(3), 0.25);
 [x,j,E,O] = retrieve(probe,10);
-plot_results(probe,x,E,O,'pattern 2 distorted 0.25')
+plot_results(probe,x,E,O,3,'pattern 3 distorted 0.25')
 
 %% AUXILIARY FUNCTIONS
-function plot_results(probe,x,E,O,filename)
+function plot_results(probe,x,E,O,mu,filename)
     subplot(3,3,4);
     imagesc( reshape( probe, 32, 32) );
     title('Probe')
@@ -100,7 +92,8 @@ function plot_results(probe,x,E,O,filename)
     ylim([0,1])
     title('Overlap 2')
     
-    sgtitle(filename)
+    t = [filename, sprintf(' - discr: %0.1f',norm(x-xi(mu)))];
+    sgtitle(t)
     saveas(gcf, append('imgs/' ,filename, '.jpg') );
 end
 
