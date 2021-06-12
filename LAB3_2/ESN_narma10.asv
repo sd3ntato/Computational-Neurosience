@@ -37,21 +37,15 @@ train_data = data(:,1:4000);
 valid_data = data(:,4001:5000);
 
 % average performance on validation data
-errors = NaN(1,10);
-for i = 1:50
+errors = Nan(1,10);
+for i = 1:10
     % train the network on training set.
     [Wout,Win,Wr,x] = train(train_data, Nr, Nu, lambda_r, inputScaling, rho_desired, r_density);
 
     % evaluate performance of the network on validation data, then write it on
     % the file
     MSE_valid = evaluate(Wr, Win, Wout, x, valid_data);
-    
-    errors(i) = MSE_valid;
 end
-mean_error = mean(errors);
-fprintf(fid, 'MSE: \n');
-fprintf(fid,'mean validation error: %0.00005f \n', mean_error);
-
 
 %% ASSESSMENT
 
