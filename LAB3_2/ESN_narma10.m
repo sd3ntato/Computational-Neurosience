@@ -37,7 +37,7 @@ train_data = data(:,1:4000);
 valid_data = data(:,4001:5000);
 
 % average performance on validation data
-errors = NaN(1,10);
+errors = NaN(1,50);
 for i = 1:50
     % train the network on training set.
     [Wout,Win,Wr,x] = train(train_data, Nr, Nu, lambda_r, inputScaling, rho_desired, r_density);
