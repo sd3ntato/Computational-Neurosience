@@ -3,9 +3,9 @@ m = readtable('lab2_1_data.csv');
 m = m{:,:};
 
 %hyper-parameters
-eta = 0.0001; % learning rate
+eta = 0.001; % learning rate
 eps = 0.01; % stopping parameter
-max_epochs = 500;
+max_epochs = 200;
 
 % initialization
 w = rand(2,1).*2 - 1 ;
@@ -19,8 +19,8 @@ w2s = [];
 for epoch = 1:max_epochs
     
     % epoch of online hebb training
-    for c = 1 : size(m,2)
-        u = m(:,1) ;
+    for c = randperm(size(m,2))
+        u = m(:,c) ;
         v = w' * u ;
         dw = eta .* v .* u ;
         w = w + dw;
@@ -74,7 +74,7 @@ legend('data points','eigenvector','normalized w')
 title('data, principal eigenvector and w')
 axis square
 
-filename = 'classical hebbian learning online';
+filename = 'classical hebbian learning';
 sgtitle(filename)
 saveas(gcf, append('imgs/' ,filename, '.jpg') );
 

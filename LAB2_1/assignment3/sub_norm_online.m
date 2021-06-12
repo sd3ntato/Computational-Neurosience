@@ -19,8 +19,8 @@ n = ones(1,2);
 for epoch = 1:max_epochs
     
     % epoch of online hebb training
-    for c = 1 : size(m,2)
-        u = m(:,1) ;
+    for c = randperm(size(m,2))
+        u = m(:,c) ;
         v = w' * u ;
         dw = v.*u - (v*n*u .* n)'.* 1/2 ;
         
@@ -71,13 +71,13 @@ subplot(3,2,[2,4,6])
 hold on
 plot(m(1,:),m(2,:),'.');
 plotv( e_c','-',2 )
-plotv( ( w/norm(w) ), '-',0.5)
+plotv( ( w/norm(w) ), '-',0.7)
 hold off
 legend('data points','eigenvector','normalized w')
 title('data, principal eigenvector and w')
 axis square
 
-filename = 'subtr normalization learning online';
+filename = 'subtr normalization learning rule';
 sgtitle(filename)
 saveas(gcf, append('imgs/' ,filename, '.jpg') );
 

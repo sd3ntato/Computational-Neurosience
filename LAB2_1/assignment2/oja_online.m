@@ -3,10 +3,10 @@ m = readtable('lab2_1_data.csv');
 m = m{:,:};
 
 %hyper-parameters
-eta = 0.01; % learning rate
+eta = 0.1; % learning rate
 eps = 0.01; % stopping parameter
 alpha = 0.01;
-max_epochs = 1;
+max_epochs = 100;
 
 % initialization
 w = rand(2,1).*2 - 1 ;
@@ -20,18 +20,17 @@ w2s = [];
 for epoch = 1:max_epochs
     
     % epoch of online hebb training
-    for c = 1 : size(m,2)
-        u = m(:,1) ;
-        v = w' * u 
+    for c = randperm(size(m,2))
+        u = m(:,c) ;
+        v = w' * u;
         dw = v .* u - (alpha*v^2).* w ;
         w = w + dw;
-        
-        % save statistics
-        ws = [ ws, w ]; %#ok<AGROW>
-        dws = [ dws, norm(dw) ]; %#ok<AGROW>
-        w1s = [ w1s, w(1,1) ];   %#ok<AGROW>
-        w2s = [ w2s, w(2,1) ];   %#ok<AGROW>
     end 
+    % save statistics
+    ws = [ ws, w ]; %#ok<AGROW>
+    dws = [ dws, norm(dw) ]; %#ok<AGROW>
+    w1s = [ w1s, w(1,1) ];   %#ok<AGROW>
+    w2s = [ w2s, w(2,1) ];   %#ok<AGROW>
     
     if ( size(dws,1) > 2 ) && ( abs( dws(end) - dws(end-1) )/dws(1) < eps )
         break
@@ -75,12 +74,10 @@ legend('data points','eigenvector','normalized w')
 title('data, principal eigenvector and w')
 axis square
 
-filename = 'oja learning online';
+filename = 'oja learning rule';
 sgtitle(filename)
 saveas(gcf, append('imgs/' ,filename, '.jpg') );
 
 save('ws.mat','ws')
-
-ws
 
 
