@@ -8,7 +8,6 @@ m = load('lab2_2_data.mat');
 %m1 = load('digits.mat');
 %m.p3 = reshape( cell2mat(m1.dataset(4)), 32*32,1);
 
-% plot the fundamental memories
 subplot(3,3,1);
 imagesc( reshape( xi(1), 32, 32) );
 title('Pattern 0')
@@ -19,8 +18,7 @@ subplot(3,3,3);
 imagesc( reshape( xi(3), 32, 32) );
 title('Pattern 2')
 
-% matrix of fundamental memories. xi(mu) is a function that returns desired
-% patterns
+% matrix of fundamental memories
 XI = [ xi(1)' ; xi(2)' ; xi(3)']' ;
 N = size(XI,1);
 M = size(XI,2);
@@ -30,8 +28,6 @@ W = ( ( XI * XI') - M * eye(N,N) )/N ;
 
 b = zeros(N,1);
 
-% values of bias found by trial and error. I started from 
-% b = sum(XI(:,mu))
 for mu = 1:M
     b = b + xi(mu) ; 
 end
@@ -76,7 +72,7 @@ probe = distort_image( xi(3), 0.25);
 [x,j,E,O] = retrieve(probe,10);
 plot_results(probe,x,E,O,'pattern 2 distorted 0.25')
 
-%% AUXILIARY FUNCTIONS
+%% AUXILIARY FUNCTINS
 function plot_results(probe,x,E,O,filename)
     subplot(3,3,4);
     imagesc( reshape( probe, 32, 32) );
